@@ -1,0 +1,2 @@
+let selectedValues = [];
+export {selectedValues}
