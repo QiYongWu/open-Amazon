@@ -1,37 +1,36 @@
-<script lang = 'ts' name = 'amazonMain'' setup>
-    import {productsList} from '../data/products'
-    import {ref,onMounted } from 'vue'
-    const products = productsList;
-    let productsHtml : string;
-        productsHtml = "";
+<script lang="ts" name="amazonMain" setup>
+import { productsList } from '../data/products';
+import { ref } from 'vue';
+const products = ref(productsList);
+</script>
 
+<template>
+  <div class="main">
+    <div class="products-grid js-products-grid">
 
-  products.forEach((product) => {
-    productsHtml += `
-      <div class="product-container">
+      <div class="product-container" v-for="product in products" :key="product.id">
+
         <div class="product-image-container">
-          <img class="product-image" src="${product.image}">
+          <img class="product-image" :src="product.image"/>
         </div>
-  
+
         <div class="product-name limit-text-to-2-lines">
-          ${product.name}
+          {{ product.name }}
         </div>
-  
+
         <div class="product-rating-container">
-          <img class="product-rating-stars" src="images/ratings/rating-${product.rating.stars*10}.png">
+          <img class="product-rating-stars" :src="`images/ratings/rating-${product.rating.stars*10}.png`">
           <div class="product-rating-count link-primary">
-            ${product.rating.count}
+            {{product.rating.count}}
           </div>
         </div>
-  
+
         <div class="product-price">
-          $${(product.priceCents/100).toFixed(2)}
+          ${{ (product.priceCents / 100).toFixed(2) }}
         </div>
-  
+
         <div class="product-quantity-container">
-          <select id = "product-quantity-selections"
-          data-product-name = "${product.name}"
-        data-product-id = "${product.id}">
+          <select id = "product-quantity-selections">
             <option selected value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -47,43 +46,84 @@
   
         <div class="product-spacer"></div>
 
-        <div class="added-to-cart js-added-to-cart" 
-        data-product-name = "${product.name}"
-        data-product-id = "${product.id}"
-         >
-          <img src="images/icons/checkmark.png">
+        <div class="added-to-cart js-added-to-cart" >
+          <img src="../../images/icons/checkmark.png">
           Added
         </div>
   
-        <button class="add-to-cart-button button-primary js-add-to-cart"
-        data-product-name = "${product.name}"
-        data-product-id = "${product.id}">  
+        <button class="add-to-cart-button button-primary js-add-to-cart">  
           Add to Cart
         </button>
       </div>
-    `;
-  });
-  const productGrid = ref();
-  onMounted(() => {
-    if (productGrid.value)
-    {
-      productGrid.value.innerHTML = productsHtml;
-    }
-});
-//   document.querySelector('.js-products-grid').innerHTML = products_html;
 
-</script>
-
-
-
-<template>
-
-    <div class="main">
-        <div class="products-grid js-products-grid" ref = 'productGrid'>
-
-        </div>
+      </div>
     </div>
-
-
+ 
 </template>
 
+<style scoped>
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr); /* 6 列，每列等宽 */
+  grid-template-rows: repeat(7, auto); /* 7 行，高度自适应 */
+  gap: 30px; /* 网格间距 */
+  margin-top:30px;
+}
+
+.product-container{
+  text-align:center;
+  border:solid 2px green;
+  background-color:white;
+
+}
+
+.product-image{
+  width:200px;
+  height:200px;
+  object-fit:contain;
+}
+
+.added-to-cart{
+  /* opacity:0;  完全透明 */
+  
+  opacity:1;
+
+}
+
+.product-rating-container{
+  display:flex;
+  align-items:center;
+  justify-content: center;
+  padding: auto;
+  align-content:center;
+  gap:20px;
+  margin-bottom:10px;
+}
+
+.product-name{
+  height:60px;
+}
+.product-rating-stars{
+  width:100px;
+}
+
+.product-rating-count{
+  
+    
+}
+
+.add-to-cart-button{
+  width:100px;
+  height:50px;
+  margin-bottom:10px;
+
+}
+
+.product-name{
+  margin-top:20px;
+  margin-bottom:20px;
+}
+.product-price{
+  margin-bottom:10px;
+}
+</style>

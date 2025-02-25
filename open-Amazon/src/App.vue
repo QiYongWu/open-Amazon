@@ -4,9 +4,8 @@
 </script>
 
 <template>
- 
     <amazonHeader />
-  
+    
     <amazonMain />
 </template>
 
