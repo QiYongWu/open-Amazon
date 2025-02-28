@@ -1,12 +1,17 @@
 <script setup lang="ts">
   import amazonHeader from './components/header.vue'
   import amazonMain from './components/main.vue'
+  import sign_up from './components/sign/sign_up.vue'
+  import sign_in from './components/sign/sign_in.vue'
 </script>
 
 <template>
     <amazonHeader />
     
     <amazonMain />
+    <!-- <sign_in />
+    <sign_up /> -->
+    
 </template>
 
 <style>

@@ -43,6 +43,7 @@ function AddedToCart(product: { id: string, name: string }){
 </script>
 
 <template>
+ 
   <div class="main">
     <button id = 'add-all-product-to-cart'>
       一键添加所有商品进入购物车
