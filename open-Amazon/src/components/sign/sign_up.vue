@@ -1,10 +1,7 @@
 <script lang="ts" setup  name = 'sign_up'>
 import { ref } from 'vue'
-
-interface UserItem {
-    email: string,
-    password: string
-}
+import {type UserInter} from '@/interfaces/users/UserInterFace'
+import {type UsersType} from '@/interfaces/users/UserType'
 
 const email = ref<string>('')
 
@@ -14,7 +11,7 @@ const errorMessage = ref<string>('')
 
 const signUpSuccess = ref(false)
 
-const users = ref<UserItem[]>([
+const users = ref<UsersType>([
 ])
 
 const handleLogin = (event: Event) => {

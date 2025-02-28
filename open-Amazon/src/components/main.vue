@@ -1,25 +1,27 @@
 <script lang="ts" name="amazonMain" setup>
 import { productsList } from '../data/products';
 
-import { ref ,watch} from 'vue';
-
+import { ref ,watch,watchEffect} from 'vue';
+import { type CartItem } from '@/interfaces/cart/CartItemInterFace';
+import {type CartType}  from '@/interfaces/cart/CartType'
 const products = ref(productsList);
 let cartQuantity = ref(0);
+let selected = ref(0);
 
-
+watchEffect(()=>{
+  console.log(selected.value);
+})
 
 watch(cartQuantity,(newValue)=>{   //监听购物车数量变化实时渲染
     document.querySelector('.cart-quantity').textContent = newValue
 })
 
-interface CartItem {
-  id: string,
-  name: string,
-  quantity: number
-}
 
-const cart = ref<CartItem[]>([])
 
+
+// const cart = ref<CartItem[]>([])
+ const cart = ref<CartType>([])
+// const cart:CartType = [];
 
 function AddedToCart(product: { id: string, name: string }){
   // 先查找购物车中是否已存在该商品
@@ -72,7 +74,7 @@ function AddedToCart(product: { id: string, name: string }){
         </div>
 
         <div class="product-quantity-container">
-          <select id = "product-quantity-selections">
+          <select id = "product-quantity-selections"  v-model= 'selected'>
             <option selected value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>

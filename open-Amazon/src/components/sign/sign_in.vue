@@ -7,9 +7,9 @@ const password = ref<string>('')
 
 const errorMessage = ref<string>('')
 
-const loginSuccess = ref(false)
+const loginSuccess = ref<boolean>(false)
 
-const showSuccessful = ref('登录成功！');
+const showSuccessful = ref<string>('登录成功！');
 
 
 const handleLogin = (event: Event) => {
