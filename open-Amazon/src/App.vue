@@ -1,6 +1,6 @@
 <script setup lang="ts">
-  import amazonHeader from './components/header.vue'
-  import amazonMain from './components/main.vue'
+  import amazonHeader from './components/home_components/header.vue'
+  import amazonMain from './components/home_components/main.vue'
   import sign_up from './components/sign/sign_up.vue'
   import sign_in from './components/sign/sign_in.vue'
 </script>

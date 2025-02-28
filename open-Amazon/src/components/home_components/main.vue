@@ -1,9 +1,23 @@
 <script lang="ts" name="amazonMain" setup>
-import { productsList } from '../data/products';
+import { productsList } from '../../data/products';
 
 import { ref ,watch,watchEffect} from 'vue';
 import { type CartItem } from '@/interfaces/cart/CartItemInterFace';
 import {type CartType}  from '@/interfaces/cart/CartType'
+import axios from 'axios';
+
+
+import { onBeforeMount,onMounted,onBeforeUpdate,onUpdated,onBeforeUnmount,onUnmounted} from 'vue';
+//生命周期
+console.log('创建完毕');
+onBeforeMount(()=>{
+  console.log('挂载前');
+})
+onMounted(()=>{
+  console.log('挂载完毕');
+})
+
+
 const products = ref(productsList);
 let cartQuantity = ref(0);
 let selected = ref(0);
