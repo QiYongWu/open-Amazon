@@ -1,15 +1,56 @@
 <script lang="ts" name="amazonMain" setup>
 import { productsList } from '../data/products';
-import { ref } from 'vue';
+
+import { ref ,watch} from 'vue';
+
 const products = ref(productsList);
+let cartQuantity = ref(0);
+
+
+
+watch(cartQuantity,(newValue)=>{   //监听购物车数量变化实时渲染
+    document.querySelector('.cart-quantity').textContent = newValue
+})
+
+interface CartItem {
+  id: string,
+  name: string,
+  quantity: number
+}
+
+const cart = ref<CartItem[]>([])
+
+
+function AddedToCart(product: { id: string, name: string }){
+  // 先查找购物车中是否已存在该商品
+  const existingItem = cart.value.find(item => item.id === product.id)
+  if(existingItem) {
+    // 如果存在则增加数量
+    existingItem.quantity++
+  } else {
+    // 否则直接添加新商品
+    cart.value.push({
+      id: product.id,
+      name: product.name,
+      quantity: 1
+    })
+  }
+  cartQuantity.value++;
+  console.log('cartQuantity',cartQuantity.value);
+  console.log('cart',cart.value);
+}
+
 </script>
 
 <template>
   <div class="main">
+    <button id = 'add-all-product-to-cart'>
+      一键添加所有商品进入购物车
+    </button>
     <div class="products-grid js-products-grid">
-
-      <div class="product-container" v-for="product in products" :key="product.id">
-
+      
+      <div class="product-container" v-for="product in products"  :key="product.id">
+        <!--使用v-for对应的key属性进行状态管理-->
         <div class="product-image-container">
           <img class="product-image" :src="product.image"/>
         </div>
@@ -46,12 +87,13 @@ const products = ref(productsList);
   
         <div class="product-spacer"></div>
 
-        <div class="added-to-cart js-added-to-cart" >
+        <div class="added-to-cart js-added-to-cart">
           <img src="../../images/icons/checkmark.png">
           Added
         </div>
   
-        <button class="add-to-cart-button button-primary js-add-to-cart">  
+        <button class="add-to-cart-button button-primary js-add-to-cart"
+        @click = AddedToCart(product)>  
           Add to Cart
         </button>
       </div>

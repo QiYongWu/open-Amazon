@@ -1,2 +1,0 @@
-let selectedValues = [];
-export {selectedValues}
