@@ -1,119 +1,227 @@
 <script setup lang="ts">
-  import amazonHeader from './components/home_components/header.vue'
-  import amazonMain from './components/home_components/main.vue'
-  import sign_up from './components/sign/sign_up.vue'
-  import sign_in from './components/sign/sign_in.vue'
+  import header from '@/components/buy_components/header.vue'
+  import { RouterView ,RouterLink} from 'vue-router'
+  import { computed } from 'vue'
+  import { useRoute } from 'vue-router'
+  const route = useRoute()
+  const targetRoute = computed(() => {
+    // 如果当前路径为 "/" 则跳转到 "/order"，否则返回 "/"
+    return route.path === '/' ? '/order' : '/'
+  })
 </script>
 
 <template>
-    <amazonHeader />
-    <amazonMain />
-    <!-- <sign_in />
-    <sign_up /> -->
+  <div id = 'router'>
+    <!-- <header /> -->
+    <div class="amazon-header">
+      <div class="amazon-header-left-section">
+        <RouterLink to="/" class="header-link">
+          <img class="amazon-logo"
+            src="../images/amazon-logo-white.png">
+          <img class="amazon-mobile-logo"
+            src="../images/amazon-mobile-logo-white.png">
+        </RouterLink>
+      </div>
+
+      <div>
+        <RouterLink to = '/home'>
+         
+          <img id = 'home-logo' src = '../images/home-logo.png'>
+        </RouterLink>
+      </div>
+
+      <div class="amazon-header-middle-section">
+        <input class="search-bar" type="text" placeholder="Search">
+
+        <button class="search-button">
+          <img class="search-icon" src="../images/icons/search-icon.png">
+        </button>
+      </div>
+
+      <div class="amazon-header-right-section">
+        <RouterLink :to=targetRoute class="orders-link header-link">
+          <span class="returns-text">Returns</span>
+          <span class="orders-text">& Orders</span>
+        </RouterLink>
+
+        <RouterLink to = '/cart' class="cart-link header-link" >
+          <img class="cart-icon" src="../images/icons/cart-icon.png">
+          <div class="cart-quantity js-cart-quantity">0</div>
+          <div class="cart-text">Cart</div>
+        </RouterLink>
+      </div>
+    </div>
+
+  </div>
+
+  <div id = 'routers'>
+    <RouterView>
+
+    </RouterView>
+
+  </div>
+    
     
 </template>
 
-<style>
-  body {
-  font-family: Roboto, Arial;
-  color: rgb(33, 33, 33);
-  /* The <body> element has a default margin of 8px
-     on all sides. This removes the default margins. */
-  margin: 0;
+
+<style scoped>
+
+
+  #home-logo{
+    width:45px;
+    height:45px;
+    
+  }
+  
+  .amazon-header {
+  background-color: rgb(19, 25, 33);
+  color: white;
+  padding-left: 15px;
+  padding-right: 15px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
 }
 
-/* <p> elements have a default margin on the top
-   and bottom. This removes the default margins. */
-p {
-  margin: 0;
+.amazon-header-left-section {
+  width: 180px;
 }
 
-button {
+@media (max-width: 800px) {
+  .amazon-header-left-section {
+    width: unset;
+  }
+}
+
+.header-link {
+  display: inline-block;
+  padding: 6px;
+  border-radius: 2px;
   cursor: pointer;
+  text-decoration: none;
+  border: 1px solid rgba(0, 0, 0, 0);
 }
 
-select {
-  cursor: pointer;
+.header-link:hover {
+  border: 1px solid white;
 }
 
-input, select, button {
-  font-family: Roboto, Arial;
+.amazon-logo {
+  width: 100px;
+  margin-top: 5px;
 }
 
-.button-primary {
-  color: rgb(33, 33, 33);
-  background-color: rgb(255, 216, 20);
-  border: 1px solid rgb(252, 210, 0);
-  border-radius: 8px;
-  cursor: pointer;
-  box-shadow: 0 2px 5px rgba(213, 217, 217, 0.5);
+.amazon-mobile-logo {
+  display: none;
 }
 
-.button-primary:hover {
-  background-color: rgb(247, 202, 0);
-  border: 1px solid rgb(242, 194, 0);
+@media (max-width: 575px) {
+  .amazon-logo {
+    display: none;
+  }
+
+  .amazon-mobile-logo {
+    display: block;
+    height: 35px;
+    margin-top: 5px;
+  }
 }
 
-.button-primary:active {
-  background: rgb(255, 216, 20);
-  border-color: rgb(252, 210, 0);
-  box-shadow: none;
+.amazon-header-middle-section {
+  flex: 1;
+  max-width: 850px;
+  margin-left: 10px;
+  margin-right: 10px;
+  display: flex;
 }
 
-.button-secondary {
-  color: rgb(33, 33, 33);
-  background: white;
-  border: 1px solid rgb(213, 217, 217);
-  border-radius: 8px;
-  cursor: pointer;
-  box-shadow: 0 2px 5px rgba(213, 217, 217, 0.5);
+.search-bar {
+  flex: 1;
+  width: 0;
+  font-size: 16px;
+  height: 38px;
+  padding-left: 15px;
+  border: none;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
-.button-secondary:hover {
-  background-color: rgb(247, 250, 250);
+.search-button {
+  background-color: rgb(254, 189, 105);
+  border: none;
+  width: 45px;
+  height: 40px;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  flex-shrink: 0;
 }
 
-.button-secondary:active {
-  background-color: rgb(237, 253, 255);
-  box-shadow: none;
+.search-icon {
+  height: 22px;
+  margin-left: 2px;
+  margin-top: 3px;
 }
 
-/* These styles will limit text to 2 lines. Anything
-   beyond 2 lines will be replaced with "..."
-   You can find this code by using an A.I. tool or by
-   searching in Google.
-   https://css-tricks.com/almanac/properties/l/line-clamp/ */
-.limit-text-to-2-lines {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+.amazon-header-right-section {
+  width: 180px;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: end;
 }
 
-.link-primary {
-  color: rgb(1, 124, 182);
-  cursor: pointer;
+.orders-link {
+  color: white;
 }
 
-.link-primary:hover {
-  color: rgb(196, 80, 0);
+.returns-text {
+  display: block;
+  font-size: 13px;
 }
 
-/* Styles for dropdown selectors. */
-select {
-  color: rgb(33, 33, 33);
-  background-color: rgb(240, 240, 240);
-  border: 1px solid rgb(213, 217, 217);
-  border-radius: 8px;
-  padding: 3px 5px;
+.orders-text {
+  display: block;
   font-size: 15px;
-  cursor: pointer;
-  box-shadow: 0 2px 5px rgba(213, 217, 217, 0.5);
+  font-weight: 700;
 }
 
-select:focus,
-input:focus {
-  outline: 2px solid rgb(255, 153, 0);
+.cart-link {
+  color: white;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.cart-icon {
+  width: 50px;
+}
+
+.cart-text {
+  margin-top: 12px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.cart-quantity {
+  color: rgb(240, 136, 4);
+  font-size: 16px;
+  font-weight: 700;
+
+  position: absolute;
+  top: 4px;
+  left: 22px;
+  
+  width: 26px;
+  text-align: center;
 }
 
 </style>

@@ -1,5 +1,5 @@
-<script lang="ts" name="amazonMain" setup>
-import { productsList } from '../../data/products';
+<script lang="ts" name='buy' setup>
+import { productsList } from '@/data/products';
 
 import { ref ,watch,watchEffect} from 'vue';
 import { type CartItem } from '@/interfaces/cart/CartItemInterFace';
@@ -61,9 +61,7 @@ function AddedToCart(product: { id: string, name: string }){
 <template>
  
   <div class="main">
-    <button id = 'add-all-product-to-cart'>
-      一键添加所有商品进入购物车
-    </button>
+  
     <div class="products-grid js-products-grid">
       
       <div class="product-container" v-for="product in products"  :key="product.id">
