@@ -1,10 +1,10 @@
 import { createRouter ,createWebHashHistory} from "vue-router"
 import sign_in from "@/components/sign/sign_in.vue"
 import sign_up from "@/components/sign/sign_up.vue"
-import cart from '@/components/cart.vue'
+import cart from '@/pages/cart.vue'
 import buy from '@/components/buy.vue'
-import order from '@/components/order.vue'
-import home from '@/components/home.vue'
+import order from '@/pages/order.vue'
+import home from '@/pages/home.vue'
 const router = createRouter({
     history:createWebHashHistory(),
     routes:

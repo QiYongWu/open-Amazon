@@ -1,8 +1,12 @@
 <script setup lang="ts">
-  import header from '@/components/buy_components/header.vue'
   import { RouterView ,RouterLink} from 'vue-router'
-  import { computed } from 'vue'
+  import { computed ,toValue,watch} from 'vue'
   import { useRoute } from 'vue-router'
+  import { useCartStore } from './store/cart'
+  let cartQuantity = useCartStore().cartQuantity;
+  watch(cartQuantity,(newValue,oldValue) => {
+    console.log(cartQuantity);
+  })
   const route = useRoute()
   const targetRoute = computed(() => {
     // 如果当前路径为 "/" 则跳转到 "/order"，否则返回 "/"
@@ -12,7 +16,6 @@
 
 <template>
   <div id = 'router'>
-    <!-- <header /> -->
     <div class="amazon-header">
       <div class="amazon-header-left-section">
         <RouterLink to="/" class="header-link">
@@ -46,7 +49,7 @@
 
         <RouterLink to = '/cart' class="cart-link header-link" >
           <img class="cart-icon" src="../images/icons/cart-icon.png">
-          <div class="cart-quantity js-cart-quantity">0</div>
+          <div class="cart-quantity js-cart-quantity">{{ cartQuantity }}</div>
           <div class="cart-text">Cart</div>
         </RouterLink>
       </div>

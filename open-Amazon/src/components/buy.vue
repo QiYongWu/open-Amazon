@@ -2,10 +2,10 @@
 import { ref ,watch,watchEffect} from 'vue';
 import { type CartItem } from '@/interfaces/cart/CartItemInterFace';
 import {type CartType}  from '@/interfaces/cart/CartType'
-import axios from 'axios';
-
 import {useProductsStore} from '@/store/products'
+import { useCartStore } from '@/store/cart';
 
+/*
 import { onBeforeMount,onMounted,onBeforeUpdate,onUpdated,onBeforeUnmount,onUnmounted} from 'vue';
 //生命周期
 console.log('创建完毕');
@@ -15,48 +15,31 @@ onBeforeMount(()=>{
 onMounted(()=>{
   console.log('挂载完毕');
 })
+*/
+
+const useProducts = useProductsStore();
+const useCart = useCartStore();
 
 
-const useProducts = useProductsStore()
 const products = useProducts.products;
+const cart = useCart.cart;
+const cartQuantity = useCart.cartQuantity;
 
-let cartQuantity = ref(0);
-let selected = ref(0);
-
-watchEffect(()=>{
-  console.log(selected.value);
-})
-
-watch(cartQuantity,(newValue)=>{   //监听购物车数量变化实时渲染
-    document.querySelector('.cart-quantity').textContent = newValue
-})
-
-
-
-
-// const cart = ref<CartItem[]>([])
- const cart = ref<CartType>([])
-// const cart:CartType = [];
-
-function AddedToCart(product: { id: string, name: string }){
-  // 先查找购物车中是否已存在该商品
-  const existingItem = cart.value.find(item => item.id === product.id)
-  if(existingItem) {
-    // 如果存在则增加数量
-    existingItem.quantity++
-  } else {
-    // 否则直接添加新商品
-    cart.value.push({
-      id: product.id,
-      name: product.name,
-      quantity: 1
-    })
+function AddToCart(product,value:number){
+  const item = {
+    id:product.id,
+    name:product.name,
+    quantity:value
   }
-  cartQuantity.value++;
-  console.log('cartQuantity',cartQuantity.value);
-  console.log('cart',cart.value);
-}
 
+  
+  useCart.pushProduct(item,value);
+  useCart.showCart();
+}
+let selectedValue = ref(1);
+function GetChangeSelectedValue(event){
+      selectedValue.value = Number(event.target.value);
+  }
 </script>
 
 <template>
@@ -66,7 +49,6 @@ function AddedToCart(product: { id: string, name: string }){
     <div class="products-grid js-products-grid">
       
       <div class="product-container" v-for="product in products"  :key="product.id">
-        <!--使用v-for对应的key属性进行状态管理-->
         <div class="product-image-container">
           <img class="product-image" :src="product.image"/>
         </div>
@@ -88,7 +70,7 @@ function AddedToCart(product: { id: string, name: string }){
         </div>
 
         <div class="product-quantity-container">
-          <select id = "product-quantity-selections"  v-model= 'selected'>
+          <select id = "product-quantity-selections" @change = 'GetChangeSelectedValue'>
             <option selected value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -110,7 +92,7 @@ function AddedToCart(product: { id: string, name: string }){
         </div>
   
         <button class="add-to-cart-button button-primary js-add-to-cart"
-        @click = AddedToCart(product)>  
+        @click =  'AddToCart(product,selectedValue)'>  
           Add to Cart
         </button>
       </div>
