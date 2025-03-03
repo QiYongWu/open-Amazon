@@ -1,11 +1,10 @@
 <script lang="ts" name='buy' setup>
-import { productsList } from '@/data/products';
-
 import { ref ,watch,watchEffect} from 'vue';
 import { type CartItem } from '@/interfaces/cart/CartItemInterFace';
 import {type CartType}  from '@/interfaces/cart/CartType'
 import axios from 'axios';
 
+import {useProductsStore} from '@/store/products'
 
 import { onBeforeMount,onMounted,onBeforeUpdate,onUpdated,onBeforeUnmount,onUnmounted} from 'vue';
 //生命周期
@@ -18,7 +17,9 @@ onMounted(()=>{
 })
 
 
-const products = ref(productsList);
+const useProducts = useProductsStore()
+const products = useProducts.products;
+
 let cartQuantity = ref(0);
 let selected = ref(0);
 
