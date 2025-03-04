@@ -29,7 +29,9 @@ function AddToCart(product,value:number){
   const item = {
     id:product.id,
     name:product.name,
-    quantity:value
+    image:product.image,
+    quantity:value,
+    priceCents:product.priceCents,
   }
 
   
@@ -103,68 +105,181 @@ function GetChangeSelectedValue(event){
 </template>
 
 <style scoped>
+/* 基础布局优化 */
+.main {
+  padding: 2rem;
+  background-color: #f8fafc;
+  min-height: 100vh;
+}
+
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr); /* 6 列，每列等宽 */
-  grid-template-rows: repeat(7, auto); /* 7 行，高度自适应 */
-  gap: 30px; /* 网格间距 */
-  margin-top:30px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  max-width: 1440px;
+  margin: 0 auto;
 }
 
-.product-container{
-  text-align:center;
-  border:solid 2px green;
-  background-color:white;
-
+@media (max-width: 768px) {
+  .products-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
-.product-image{
-  width:200px;
-  height:200px;
-  object-fit:contain;
+/* 商品卡片美化 */
+.product-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
 }
 
-.added-to-cart{
-  /* opacity:0;  完全透明 */
-  
-  opacity:1;
-
+.product-container:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
-.product-rating-container{
-  display:flex;
-  align-items:center;
+/* 图片容器优化 */
+.product-image-container {
+  position: relative;
+  padding-top: 100%; /* 保持1:1宽高比 */
+  background: #f1f5f9;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.product-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 1rem;
+  transition: transform 0.3s;
+}
+
+.product-image:hover {
+  transform: scale(1.05);
+}
+
+/* 文字排版优化 */
+.product-name {
+  font-size: 1rem;
+  font-weight: 100;
+  color: #1e293b;
+  margin: 1rem 0;
+  line-height: 1.5;
+  min-height: 3.5em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.product-price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #10b981;
+  margin: 0.5rem 0;
+}
+
+/* 评分样式 */
+.product-rating-container {
+  display: flex;
+  align-items: center;
   justify-content: center;
-  padding: auto;
-  align-content:center;
-  gap:20px;
-  margin-bottom:10px;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
 }
 
-.product-name{
-  height:60px;
-}
-.product-rating-stars{
-  width:100px;
+.product-rating-stars {
+  width: 100px;
+  height: 20px;
 }
 
-.product-rating-count{
-  
-    
+.product-rating-count {
+  font-size: 0.875rem;
+  color: #64748b;
 }
 
-.add-to-cart-button{
-  width:100px;
-  height:50px;
-  margin-bottom:10px;
-
+/* 数量选择器美化 */
+.product-quantity-container select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 2px solid #cbd5e1;
+  border-radius: 6px;
+  background: white;
+  font-size: 1rem;
+  color: #1e293b;
+  transition: border-color 0.2s;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  background-size: 1.5em;
 }
 
-.product-name{
-  margin-top:20px;
-  margin-bottom:20px;
+.product-quantity-container select:focus {
+  outline: none;
+  border-color: #10b981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
 }
-.product-price{
-  margin-bottom:10px;
+
+/* 按钮美化 */
+.add-to-cart-button {
+  width: 100%;
+  padding: 0.75rem;
+  background: linear-gradient(to right, #10b981, #34d399);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.add-to-cart-button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.add-to-cart-button:active {
+  transform: translateY(0);
+}
+
+/* 已添加提示 */
+.added-to-cart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: #10b981;
+  font-weight: 500;
+  margin: 0.5rem 0;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.added-to-cart.visible {
+  opacity: 1;
+}
+
+.added-to-cart img {
+  width: 18px;
+  height: 18px;
+}
+
+/* 间隔优化 */
+.product-spacer {
+  flex-grow: 1;
 }
 </style>

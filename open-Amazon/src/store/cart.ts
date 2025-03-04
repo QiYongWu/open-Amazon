@@ -6,7 +6,7 @@ export const useCartStore = defineStore('cart',
             pushProduct(product,value)
             {
                 this.cartQuantity+=value;
-                
+
                 const cartProduct  = this.cart.find((item) => {
                     return item.id == product.id && item.name == product.name
                 })
