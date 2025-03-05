@@ -7,6 +7,7 @@ export const useCartStore = defineStore('cart',
             {
                 this.cartQuantity+=value;
 
+                
                 const cartProduct  = this.cart.find((item) => {
                     return item.id == product.id && item.name == product.name
                 })
@@ -51,6 +52,7 @@ export const useCartStore = defineStore('cart',
         return {
             cart:[],
             cartQuantity:0,
+           
         }
     }
    }
