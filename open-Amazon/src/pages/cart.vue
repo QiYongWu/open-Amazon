@@ -1,22 +1,18 @@
 <script lang="ts" name="Cart" setup>
 import { useCartStore } from '@/store/cart'
-import { computed } from 'vue'
+import { compile, computed } from 'vue'
 
 const cartStore = useCartStore()
-const cart = cartStore.cart
+const cart = computed(() => useCartStore().cart);
 
 const formatPrice = (cents: number) => {
   return `¥${(cents / 100).toFixed(2)}`
 }
 
-const updateQuantity = (productId: string, quantity: number) => {
-  if (quantity < 1) return
-  cartStore.updateQuantity(productId, quantity)
-}
 
-const removeItem = (productId: string) => {
-  cartStore.removeFromCart(productId)
-}
+
+
+
 </script>
 
 <template>
@@ -25,22 +21,23 @@ const removeItem = (productId: string) => {
     
     <div class="cart-grid">
       <div class="cart-card" v-for="product in cart" :key="product.id">
-        <button class="remove-btn" @click="removeItem(product.id)">
+        <button class="remove-btn" @click = ' cartStore.RemoveProduct(product.id,product.quantity)'>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
             <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
           </svg>
         </button>
         
-        <img :src="product.image" :alt="product.name" class="product-image">
+        <img :src="product.image" :alt="product.name" class="product-image" >
         
         <div class="product-info">
           <h3 class="product-name">{{ product.name }}</h3>
           <p class="product-price">{{ formatPrice(product.priceCents) }}</p>
           
           <div class="quantity-control">
-            <button 
+            <button
               class="quantity-btn"
-              @click="updateQuantity(product.id, product.quantity - 1)"
+              @click = 'cartStore.ChangeProductQuantity(product.id,-1)'
+  
               :disabled="product.quantity <= 1"
             >-</button>
             
@@ -48,7 +45,7 @@ const removeItem = (productId: string) => {
             
             <button 
               class="quantity-btn"
-              @click="updateQuantity(product.id, product.quantity + 1)"
+              @click = 'cartStore.ChangeProductQuantity(product.id,1)'
             >+</button>
           </div>
         </div>
